@@ -3,7 +3,7 @@ package benchmark
 import (
 	"testing"
 
-	"github.com/engelsjk/gmartini"
+	"github.com/AliFlux/gmartini"
 )
 
 func BenchmarkMartini(b *testing.B) {

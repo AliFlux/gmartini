@@ -8,7 +8,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/engelsjk/gmartini"
+	"github.com/AliFlux/gmartini"
 )
 
 func stopwatch(start time.Time, name string) {

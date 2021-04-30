@@ -6,7 +6,7 @@ import (
 	"math"
 	"os"
 
-	"github.com/engelsjk/gmartini"
+	"github.com/AliFlux/gmartini"
 )
 
 func main() {

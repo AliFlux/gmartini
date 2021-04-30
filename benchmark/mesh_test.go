@@ -5,7 +5,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/engelsjk/gmartini"
+	"github.com/AliFlux/gmartini"
 )
 
 func benchmarkMesh(maxError float32, b *testing.B) {
