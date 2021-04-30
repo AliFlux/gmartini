@@ -9,31 +9,9 @@ import (
 	"os"
 	"testing"
 
-	"github.com/engelsjk/cturbo"
 	gmu "github.com/engelsjk/gomathutils"
 	"github.com/fogleman/gg"
 )
-
-func drawTerrain(dc *gg.Context, terrain []float32) {
-	var cutoff, max float32 = 1.0, 1.0
-	size := int(math.Sqrt(float64(len(terrain))))
-
-	upLeft := image.Point{0, 0}
-	lowRight := image.Point{size, size}
-	img := image.NewRGBA(image.Rectangle{upLeft, lowRight})
-
-	maxZ, minZ := gmu.MaxminFloat32(terrain)
-
-	for y := 0; y < size; y++ {
-		for x := 0; x < size; x++ {
-			k := y*size + x
-			v := gmu.MinFloat32v(max, max*gmu.MinFloat32v((terrain[k]-minZ)/(maxZ-minZ), cutoff)/cutoff)
-			r, g, b, a := cturbo.Map(float64(v), 255)
-			img.Set(x, y, color.RGBA{r, g, b, a})
-		}
-	}
-	dc.DrawImage(img, 0, 0)
-}
 
 func drawVertices(dc *gg.Context, mesh *Mesh) {
 	dc.SetRGB(0, 0, 0)
@@ -58,37 +36,6 @@ func drawTriangles(dc *gg.Context, mesh *Mesh) {
 		dc.LineTo(ax, ay)
 	}
 	dc.Stroke()
-}
-
-func TestDrawTerrain(t *testing.T) {
-
-	var terrainFile string = "data/fuji.png"
-	var encoding string = "mapbox"
-	var imageFile string = "test/terrain.png"
-
-	file, err := os.Open(terrainFile)
-	if err != nil {
-		t.Error(err)
-	}
-	defer file.Close()
-
-	img, _, err := image.Decode(file)
-	if err != nil {
-		t.Error(err)
-	}
-
-	terrain, err := DecodeElevation(img, encoding, true)
-	if err != nil {
-		t.Error(err)
-	}
-
-	dc := gg.NewContext(512, 512)
-	dc.SetRGB(1, 1, 1)
-	dc.Clear()
-
-	drawTerrain(dc, terrain)
-	dc.SavePNG(imageFile)
-	t.Logf("test image saved at %s", imageFile)
 }
 
 func load(terrainFile, encoding string, gridSize int32, maxError float32) ([]float32, *Mesh) {
@@ -251,7 +198,6 @@ func TestDrawAll(t *testing.T) {
 	dc.SetRGB(1, 1, 1)
 	dc.Clear()
 
-	drawTerrain(dc, terrain)
 	drawVertices(dc, mesh)
 	drawTriangles(dc, mesh)
 	dc.SavePNG(fmt.Sprintf(imageFile, int(maxError)))
